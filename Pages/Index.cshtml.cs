@@ -1,4 +1,3 @@
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
 using System.Collections.Generic;
@@ -16,10 +15,12 @@ namespace RkApp.Pages
         }
 
         public List<WeatherItem> WeatherItems { get; set; }
+        public List<WeatherItem> FilteredWeatherItems { get; set; }
+        public SearchParameters SearchParams { get; set; }
 
-        public void OnGet(string sortBy = null, bool sortAsc = true)
+        public void OnGet(SearchParameters searchParams)
         {
-            List<WeatherItem> weatherItems = new List<WeatherItem>()
+            WeatherItems = new List<WeatherItem>()
             {
                 new WeatherItem {
                     City = "New York",
@@ -113,20 +114,31 @@ namespace RkApp.Pages
                 }
             };
 
-            if (sortBy == null)
+            SearchParams = searchParams ?? new SearchParameters();
+            FilteredWeatherItems = ApplyFilter(WeatherItems, SearchParams);
+        }
+
+        private List<WeatherItem> ApplyFilter(List<WeatherItem> items, SearchParameters searchParams)
+        {
+            if (searchParams == null || string.IsNullOrEmpty(searchParams.FilterProperty) || string.IsNullOrEmpty(searchParams.Keyword))
             {
-                WeatherItems = weatherItems;
-                return;
+                return items;
             }
 
-            WeatherItems = sortBy.ToLower() switch
+            var keyword = searchParams.Keyword.ToLower();
+            switch (searchParams.FilterProperty)
             {
-                "city" => sortAsc ? weatherItems.OrderBy(w => w.City).ToList() : weatherItems.OrderByDescending(w => w.City).ToList(),
-                "temperature" => sortAsc ? weatherItems.OrderBy(w => w.Temperature).ToList() : weatherItems.OrderByDescending(w => w.Temperature).ToList(),
-                "humidity" => sortAsc ? weatherItems.OrderBy(w => w.Humidity).ToList() : weatherItems.OrderByDescending(w => w.Humidity).ToList(),
-                "airspeed" => sortAsc ? weatherItems.OrderBy(w => w.AirSpeed).ToList() : weatherItems.OrderByDescending(w => w.AirSpeed).ToList(),
-                _ => weatherItems
-            };
+                case "City":
+                    return items.Where(w => w.City.ToLower().Contains(keyword)).ToList();
+                case "Temperature":
+                    return items.Where(w => w.Temperature.ToString().Contains(keyword)).ToList();
+                case "Humidity":
+                    return items.Where(w => w.Humidity.ToString().Contains(keyword)).ToList();
+                case "AirSpeed":
+                    return items.Where(w => w.AirSpeed.ToString().Contains(keyword)).ToList();
+                default:
+                    return items;
+            }
         }
 
         public class WeatherItem
@@ -135,6 +147,12 @@ namespace RkApp.Pages
             public double Temperature { get; set; }
             public int Humidity { get; set; }
             public int AirSpeed { get; set; }
+        }
+
+        public class SearchParameters
+        {
+            public string FilterProperty { get; set; }
+            public string Keyword { get; set; }
         }
     }
 }

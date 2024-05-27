@@ -10,41 +10,55 @@
     <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
 </div>
 
+<div class="input-group mb-3">
+    <label class="input-group-text" for="propertyDropdown">Filter By</label>
+    <select class="form-select" id="propertyDropdown">
+        <option value="" selected>Choose...</option>
+        <option value="City">City</option>
+        <option value="Temperature">Temperature</option>
+        <option value="Humidity">Humidity</option>
+        <option value="AirSpeed">Air Speed</option>
+    </select>
+
+    <input type="text" id="keyword" class="form-control">
+    <button class="btn btn-outline-secondary" type="button" id="button-addon2" onclick="filter()"><i class="bi bi-filter"></i> Apply Filter</button>
+</div>
+
 <table class="table">
     <thead>
         <tr>
             <th scope="col">
                 City
                 <div class="btn-group" role="group" aria-label="">
-                    <a href="?sortBy=city&sortAsc=false" type="button" class="btn btn-secondary">&lt;</a>
-                    <a href="?sortBy=city&sortAsc=true" type="button" class="btn btn-secondary">&gt;</a>
+                    <a href="~/index?sortBy=City&sortAsc=false" type="button" class="btn btn-secondary">&lt;</a>
+                    <a href="~/index?sortBy=City&sortAsc=true" type="button" class="btn btn-secondary">&gt;</a>
                 </div>
             </th>
             <th scope="col">
                 Temperature
                 <div class="btn-group" role="group" aria-label="">
-                    <a href="?sortBy=temperature&sortAsc=false" type="button" class="btn btn-secondary">&lt;</a>
-                    <a href="?sortBy=temperature&sortAsc=true" type="button" class="btn btn-secondary">&gt;</a>
+                    <a href="~/index?sortBy=Temperature&sortAsc=false" type="button" class="btn btn-secondary">&lt;</a>
+                    <a href="~/index?sortBy=Temperature&sortAsc=true" type="button" class="btn btn-secondary">&gt;</a>
                 </div>
             </th>
             <th scope="col">
                 Humidity
                 <div class="btn-group" role="group" aria-label="">
-                    <a href="?sortBy=humidity&sortAsc=false" type="button" class="btn btn-secondary">&lt;</a>
-                    <a href="?sortBy=humidity&sortAsc=true" type="button" class="btn btn-secondary">&gt;</a>
+                    <a href="~/index?sortBy=Humidity&sortAsc=false" type="button" class="btn btn-secondary">&lt;</a>
+                    <a href="~/index?sortBy=Humidity&sortAsc=true" type="button" class="btn btn-secondary">&gt;</a>
                 </div>
             </th>
             <th scope="col">
                 Air Speed
                 <div class="btn-group" role="group" aria-label="">
-                    <a href="?sortBy=airspeed&sortAsc=false" type="button" class="btn btn-secondary">&lt;</a>
-                    <a href="?sortBy=airspeed&sortAsc=true" type="button" class="btn btn-secondary">&gt;</a>
+                    <a href="~/index?sortBy=AirSpeed&sortAsc=false" type="button" class="btn btn-secondary">&lt;</a>
+                    <a href="~/index?sortBy=AirSpeed&sortAsc=true" type="button" class="btn btn-secondary">&gt;</a>
                 </div>
             </th>
         </tr>
     </thead>
     <tbody>
-        @foreach (var weatherItem in Model.WeatherItems)
+        @foreach (var weatherItem in Model.FilteredWeatherItems)
         {
             <tr>
                 <td>@weatherItem.City</td>
@@ -55,3 +69,13 @@
         }
     </tbody>
 </table>
+
+@section Scripts {
+    <script>
+        function filter() {
+            var property = $("#propertyDropdown").val();
+            var keyword = $("#keyword").val();
+            window.location = "?filterProperty=" + property + "&keyword=" + keyword;
+        }
+    </script>
+}
