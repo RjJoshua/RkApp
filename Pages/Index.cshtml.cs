@@ -17,8 +17,10 @@ namespace RkApp.Pages
         public List<WeatherItem> WeatherItems { get; set; }
         public List<WeatherItem> FilteredWeatherItems { get; set; }
         public SearchParameters SearchParams { get; set; }
+        public int PageIndex { get; set; }
+        public int PageCount { get; set; }
 
-        public void OnGet(SearchParameters searchParams)
+        public void OnGet(SearchParameters searchParams, int pageIndex = 1)
         {
             WeatherItems = new List<WeatherItem>()
             {
@@ -116,6 +118,12 @@ namespace RkApp.Pages
 
             SearchParams = searchParams ?? new SearchParameters();
             FilteredWeatherItems = ApplyFilter(WeatherItems, SearchParams);
+
+            
+            const int pageSize = 10; 
+            PageIndex = pageIndex;
+            PageCount = (int)Math.Ceiling((double)FilteredWeatherItems.Count / pageSize);
+            FilteredWeatherItems = FilteredWeatherItems.Skip((pageIndex - 1) * pageSize).Take(pageSize).ToList();
         }
 
         private List<WeatherItem> ApplyFilter(List<WeatherItem> items, SearchParameters searchParams)

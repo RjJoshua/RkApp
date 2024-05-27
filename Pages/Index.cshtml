@@ -70,6 +70,19 @@
     </tbody>
 </table>
 
+<div class="text-center">
+    <nav aria-label="Page navigation">
+        <ul class="pagination justify-content-center">
+            @for (int i = 1; i <= Model.PageCount; i++)
+            {
+                <li class="page-item @(i == Model.PageIndex ? "active" : "")">
+                    <a class="page-link" href="?pageIndex=@i">@i</a>
+                </li>
+            }
+        </ul>
+    </nav>
+</div>
+
 @section Scripts {
     <script>
         function filter() {
