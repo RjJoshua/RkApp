@@ -1,5 +1,6 @@
 ﻿@page
-@model Index
+@model RkApp.Pages.IndexModel
+
 @{
     ViewData["Title"] = "Home page";
 }
@@ -15,29 +16,29 @@
             <th scope="col">
                 City
                 <div class="btn-group" role="group" aria-label="">
-                    <a href="~/index?sortBy=city&sortAsc=false" type="button" class="btn btn-secondary"><i class="bi bi-arrow-bar-down"></i></a>
-                    <a href="~/index?sortBy=city&sortAsc=true" type="button" class="btn btn-secondary"><i class="bi bi-arrow-bar-up"></i></a>
+                    <a href="?sortBy=city&sortAsc=false" type="button" class="btn btn-secondary">&lt;</a>
+                    <a href="?sortBy=city&sortAsc=true" type="button" class="btn btn-secondary">&gt;</a>
                 </div>
             </th>
             <th scope="col">
                 Temperature
                 <div class="btn-group" role="group" aria-label="">
-                    <a href="~/index?sortBy=temperature&sortAsc=false" type="button" class="btn btn-secondary"><i class="bi bi-arrow-bar-down"></i></a>
-                    <a href="~/index?sortBy=temperature&sortAsc=true" type="button" class="btn btn-secondary"><i class="bi bi-arrow-bar-up"></i></a>
+                    <a href="?sortBy=temperature&sortAsc=false" type="button" class="btn btn-secondary">&lt;</a>
+                    <a href="?sortBy=temperature&sortAsc=true" type="button" class="btn btn-secondary">&gt;</a>
                 </div>
             </th>
             <th scope="col">
                 Humidity
                 <div class="btn-group" role="group" aria-label="">
-                    <a href="~/index?sortBy=humidity&sortAsc=false" type="button" class="btn btn-secondary"><i class="bi bi-arrow-bar-down"></i></a>
-                    <a href="~/index?sortBy=humidity&sortAsc=true" type="button" class="btn btn-secondary"><i class="bi bi-arrow-bar-up"></i></a>
+                    <a href="?sortBy=humidity&sortAsc=false" type="button" class="btn btn-secondary">&lt;</a>
+                    <a href="?sortBy=humidity&sortAsc=true" type="button" class="btn btn-secondary">&gt;</a>
                 </div>
             </th>
             <th scope="col">
                 Air Speed
                 <div class="btn-group" role="group" aria-label="">
-                    <a href="~/index?sortBy=airspeed&sortAsc=false" type="button" class="btn btn-secondary"><i class="bi bi-arrow-bar-down"></i></a>
-                    <a href="~/index?sortBy=airspeed&sortAsc=true" type="button" class="btn btn-secondary"><i class="bi bi-arrow-bar-up"></i></a>
+                    <a href="?sortBy=airspeed&sortAsc=false" type="button" class="btn btn-secondary">&lt;</a>
+                    <a href="?sortBy=airspeed&sortAsc=true" type="button" class="btn btn-secondary">&gt;</a>
                 </div>
             </th>
         </tr>

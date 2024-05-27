@@ -1,20 +1,23 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.Extensions.Logging;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace RkApp.Pages
 {
-    public class Index : PageModel
+    public class IndexModel : PageModel
     {
-        private readonly ILogger<Index> _logger;
+        private readonly ILogger<IndexModel> _logger;
 
-        public Index(ILogger<Index> logger)
+        public IndexModel(ILogger<IndexModel> logger)
         {
             _logger = logger;
         }
 
         public List<WeatherItem> WeatherItems { get; set; }
 
-        public void OnGet(string? sortBy = null, string? sortAsc = "true")
+        public void OnGet(string sortBy = null, bool sortAsc = true)
         {
             List<WeatherItem> weatherItems = new List<WeatherItem>()
             {
@@ -110,27 +113,25 @@ namespace RkApp.Pages
                 }
             };
 
-            if (sortBy == null || sortAsc == null)
+            if (sortBy == null)
             {
                 WeatherItems = weatherItems;
                 return;
             }
 
-            bool ascending = sortAsc.ToLower() == "true";
-
             WeatherItems = sortBy.ToLower() switch
             {
-                "city" => ascending ? weatherItems.OrderBy(w => w.City).ToList() : weatherItems.OrderByDescending(w => w.City).ToList(),
-                "temperature" => ascending ? weatherItems.OrderBy(w => w.Temperature).ToList() : weatherItems.OrderByDescending(w => w.Temperature).ToList(),
-                "humidity" => ascending ? weatherItems.OrderBy(w => w.Humidity).ToList() : weatherItems.OrderByDescending(w => w.Humidity).ToList(),
-                "airspeed" => ascending ? weatherItems.OrderBy(w => w.AirSpeed).ToList() : weatherItems.OrderByDescending(w => w.AirSpeed).ToList(),
+                "city" => sortAsc ? weatherItems.OrderBy(w => w.City).ToList() : weatherItems.OrderByDescending(w => w.City).ToList(),
+                "temperature" => sortAsc ? weatherItems.OrderBy(w => w.Temperature).ToList() : weatherItems.OrderByDescending(w => w.Temperature).ToList(),
+                "humidity" => sortAsc ? weatherItems.OrderBy(w => w.Humidity).ToList() : weatherItems.OrderByDescending(w => w.Humidity).ToList(),
+                "airspeed" => sortAsc ? weatherItems.OrderBy(w => w.AirSpeed).ToList() : weatherItems.OrderByDescending(w => w.AirSpeed).ToList(),
                 _ => weatherItems
             };
         }
 
         public class WeatherItem
         {
-            public string? City { get; set; }
+            public string City { get; set; }
             public double Temperature { get; set; }
             public int Humidity { get; set; }
             public int AirSpeed { get; set; }
